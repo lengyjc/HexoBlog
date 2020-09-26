@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Hexo博客搭建与美化</title>
+    <url>/HexoBlog/2020/09/27/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E4%B8%8E%E7%BE%8E%E5%8C%96/</url>
+    <content><![CDATA[<h2 id="Npm安装"><a href="#Npm安装" class="headerlink" title="Npm安装"></a>Npm安装</h2><ol>
+<li>使用说明</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/HexoBlog/2020/09/24/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -593,20 +607,6 @@
       </categories>
       <tags>
         <tag>.Net Core</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo博客搭建与美化</title>
-    <url>/HexoBlog/2020/09/27/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E4%B8%8E%E7%BE%8E%E5%8C%96/</url>
-    <content><![CDATA[<h2 id="Npm安装"><a href="#Npm安装" class="headerlink" title="Npm安装"></a>Npm安装</h2><ol>
-<li>使用说明</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
       </tags>
   </entry>
 </search>
