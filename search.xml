@@ -22,6 +22,7 @@
     <title>.Net Core查漏补缺</title>
     <url>/HexoBlog/2020/09/24/NetCore%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/</url>
     <content><![CDATA[<h1 id="Net-Core查漏补缺概论"><a href="#Net-Core查漏补缺概论" class="headerlink" title=".Net Core查漏补缺概论"></a>.Net Core查漏补缺概论</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>.Net Core作为Net系技术的一个大趋势，在现在这个竞争条件下已经是基础技能之一，不会.Net Core的已经基本上可以说落后于潮流了，本次主要目的就是为了给大家给.Net Core知识进行查漏补缺并以此来讲解目前后台框架的开发使用。</p>
+<p><img src="https://i.loli.net/2020/09/26/JD2akpt5GXAWu4L.jpg" alt="111"></p>
 <hr>
 <h2 id="Net-Core-基础"><a href="#Net-Core-基础" class="headerlink" title=".Net Core 基础"></a>.Net Core 基础</h2><p>.Net Core由4个支柱项目构成<strong>CoreCLR</strong>、<strong>CoreFx</strong>、<strong>CLI</strong>、<strong>Rolsyn</strong></p>
 <ul>
