@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hello World</title>
+    <url>/HexoBlog/2020/09/24/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>.Net Core查漏补缺</title>
+    <url>/HexoBlog/2020/09/24/NetCore%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/</url>
+    <content><![CDATA[<h1 id="Net-Core查漏补缺概论"><a href="#Net-Core查漏补缺概论" class="headerlink" title=".Net Core查漏补缺概论"></a>.Net Core查漏补缺概论</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>.Net Core作为Net系技术的一个大趋势，在现在这个竞争条件下已经是基础技能之一，不会.Net Core的已经基本上可以说落后于潮流了，本次主要目的就是为了给大家给.Net Core知识进行查漏补缺并以此来讲解目前后台框架的开发使用。</p>
+<hr>
+<h2 id="Net-Core-基础"><a href="#Net-Core-基础" class="headerlink" title=".Net Core 基础"></a>.Net Core 基础</h2><p>.Net Core由4个支柱项目构成<strong>CoreCLR</strong>、<strong>CoreFx</strong>、<strong>CLI</strong>、<strong>Rolsyn</strong></p>
+<ul>
+<li>CoreCLR : .NetCore公共语言运行时，是由C++编写的。</li>
+<li>CoreFX：Framework 的CLR演化而来，与CLR结构一致,完全由C#编写，CLR使用JIT解析代码，提供异常处理机制，不同平台的线程处理，GC。</li>
+<li>CLI：通用中间语言，公开的技术标准，定义了一个不依赖于具体操作系统与硬件架构的中间语言（IL），以及执行这个语言所需的运行环境。</li>
+<li>Rolsyn：.NET上的高级语言编译器，C#、VB.NET\F#，微软眼中的下一代编译平台。</li>
+</ul>
+<p>所以说C#代码写到一定境界就必然会要求去搞懂C++,真正最高性能的部分还是在C++。</p>
+<p>以下将NetCore简称为Core。</p>
+<p>FrameWork版本迁移Core工具：</p>
+<ul>
+<li><strong>.NET Portability Analyzer</strong> .NET迁移分析工具，分析项目的源代码，并且生成分析报告</li>
+<li>参考学习链接<a href="https://docs.microsoft.com/en-us/dotnet/standard/analyzers/portability-analyzer">微软官方</a>，<a href="https://www.cnblogs.com/qtiger/p/13029562.html">博客</a>,<a href="https://www.cnblogs.com/shanyou/archive/2014/12/07/4149637.html">张善友博客</a></li>
+</ul>
+<p>Core源码仓库地址:<a href="https://github.com/dotnet">源码仓库</a>,<a href="https://github.com/dotnet/runtime">runtime</a></p>
+<hr>
+<h2 id="Net-Core-WinDbg基本调试"><a href="#Net-Core-WinDbg基本调试" class="headerlink" title=".Net Core WinDbg基本调试"></a>.Net Core WinDbg基本调试</h2><ul>
+<li>工具： windbg 分为2个版本传统版和预览版 区别在于界面</li>
+<li>术语： dmp可以理解为内存状态快照，pdb 程序数据库文件，Symbol 数据信息符号文件包含exe的调试信息</li>
+<li>下载：<a href="https://dl.pconline.com.cn/download/770876.html">地址</a>,<a href="https://docs.microsoft.com/zh-cn/windows-hardware/drivers/debugger/debugger-download-tools">官网下载</a></li>
+<li>好处：可获取linux下获取已部署出去的现场环境来进行调试排查疑难问题</li>
+</ul>
+<h3 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h3><p>检查程序安装列表中是否有<img src="https://i.loli.net/2020/09/23/biglxWJVU4y9MYA.png" alt="image-20200923212537938"></p>
+<p>如果已存在那么不需要再去下载独立安装包，如果不存在需要去上述下载地址下载安装</p>
+<p>在刚刚程序中点击修改 然后在修改界面中选择安装如图所示的功能</p>
+<p><img src="https://i.loli.net/2020/09/23/tHcyMUXV8wg6hDO.png" alt="image-20200923212648889"></p>
+<p>此版本为传统版本</p>
+<h3 id="使用步骤："><a href="#使用步骤：" class="headerlink" title="使用步骤："></a>使用步骤：</h3><h4 id="1-安装-Net-Core-dbg调试插件-SOS"><a href="#1-安装-Net-Core-dbg调试插件-SOS" class="headerlink" title="1. 安装.Net Core dbg调试插件 SOS"></a>1. 安装.Net Core dbg调试插件 SOS</h4><p>windbg是一个空壳，所以我们要使用sos(son of strike)调试插件</p>
+<ul>
+<li><p>方式一：</p>
+<p>从<a href="https://github.com/dotnet/diagnostics">官方</a>下载源码 点击restore.bat然后再点击build.cmd </p>
+<p>然后就可以再如下目录中找到sos.dll文件</p>
+<p><img src="https://i.loli.net/2020/09/23/ES9hNVWqLeTygdH.png" alt="image-20200923214438036"></p>
+</li>
+<li><p>方式二：</p>
+<p>如果你不想去下载源码，还可以用第二个方式</p>
+<p>在电脑环境变量中配置windbg的目录 （如果不是windows商店安装的话）</p>
+<p>进入我们测试的项目bin目录打开cmd</p>
+<p>输入命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">windbg dotnet .\TestWindbg</span><br><span class="line">工具名             项目名称</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>方式三</p>
+<p>可以在命令行工具cmd中安装sos</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">dotnet tool install -g dotnet-sos</span><br><span class="line">dotnet-sos install</span><br></pre></td></tr></table></figure>
+
+<p>第一行为安装安装工具</p>
+<p>第二行为安装sos</p>
+</li>
+<li><p>加载sos.dll</p>
+<p>在指令中输入</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">.load .load C:\Windows\Microsoft.NET\Framework64\v4.0.30319\SOS.dll</span><br></pre></td></tr></table></figure>
+
+<p>ps:注意如果32位打开的windbg要用对应32位的路径 路径不同人可能不同 请选择自己合适的路径 </p>
+<p>地址可以通过everything搜索得到</p>
+<p>参考链接 <a href="https://www.cnblogs.com/faron/articles/4360962.html">32位程序错误</a></p>
+</li>
+</ul>
+<h4 id="2-简单的调试"><a href="#2-简单的调试" class="headerlink" title="2. 简单的调试"></a>2. 简单的调试</h4><p>输入指令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sxe ld coreclr</span><br></pre></td></tr></table></figure>
+
+<p>其中sxe 表示设置事件触发，ld为load的缩写 表示加载，整句话表示在加载coreclr时候中断</p>
+<p>接下来点击g 让程序向下跑 （如果没有设置断点 程序会一直跑）</p>
+<p>输入指令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">.chain</span><br></pre></td></tr></table></figure>
+
+<p>可以显示加载的调试器信息</p>
+<p>输入指令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">!bpmd TestWindbg.dll TestWindbg.Program.Main</span><br></pre></td></tr></table></figure>
+
+<p>!bpmd 为sos提供的指令用来增加断点 有2个参数 dll 名称和方法名称全称</p>
+<p>继续按g执行可以看到如图所示停在第一个断点上</p>
+<p><img src="https://i.loli.net/2020/09/23/vopzI4qDQRi6KjU.png" alt="image-20200923223651821"></p>
+<p>更多的指令可以参考<a href="https://www.cnblogs.com/kekec/archive/2012/12/02/2798020.html">博客</a> 或者自行百度，谷歌搜索</p>
+<h4 id="3-创建dmp文件"><a href="#3-创建dmp文件" class="headerlink" title="3. 创建dmp文件"></a>3. 创建dmp文件</h4><ol>
+<li><p>下载ProcDump <a href="https://docs.microsoft.com/zh-cn/sysinternals/downloads/procdump">下载</a></p>
+</li>
+<li><p>使用自带工具D:\Windows Kits\10\Debuggers\x86下的adplus.exe工具抓取 运行后可以在帮助文档中查看命令</p>
+</li>
+<li><p><img src="https://i.loli.net/2020/09/23/YIQnZthMl6cwako.png" alt="image-20200923224422276"></p>
+</li>
+<li><p>使用命令</p>
+</li>
+<li><pre><code class="shell">procdump -ma -c 50 -s 3 -n 2 5844(Process Name or PID)
+    -ma 生成full dump, 即包括进程的所有内存. 默认的dump格式包括线程和句柄信息.
+    -c 在CPU使用率到达这个阀值的时候, 生成dump文件.
+    -s CPU阀值必须持续多少秒才抓取dump文件.
+    -n 在该工具退出之前要抓取多少个dump文件.
+    上面的命令行会监控w3wp.exe的CPU, 在CPU使用率超过百分之五十超过3秒的时候, 生成dump文件, 重复该动作两次.
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- linux用lldb抓取dump文件</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96; shell</span><br><span class="line"> ulimit -c # 如果返回0 则为不允许抓取转储文件</span><br><span class="line"> ulimit -c unlimited #解除限制</span><br><span class="line"> dotnet tool install -g dotnet-sos</span><br><span class="line"> dotnet-sos install # 需要用shell登录安装这个命令 安装完后需要重启会话 </span><br><span class="line"> # 使用lldb </span><br><span class="line"> #已安装的话</span><br><span class="line"> lldb-6.0#进入lldb界面</span><br><span class="line"> soshelp#查看sos命令</span><br><span class="line"> lldb-6.0 dotnet HelloWorld.dll #进入lldb</span><br><span class="line"> settings set --target.run-args &quot;HelloWorld.dll&quot; #设置运行目标参数</span><br><span class="line"> process launch -s # -s代表在入口点暂停</span><br><span class="line"> process handle -s false SIGUSR1 SIGUSR2 #屏蔽调试不需要的信号</span><br><span class="line"> breakpoint set -n LoadLibrayExw #设置断点 参数为方法名</span><br><span class="line"> breakpoint del 1 #删除序号1断点</span><br><span class="line"> bpmd TestWindbg.dll TestWindbg.Program.Main #也可以做断点 只是没有之前那个的！</span><br><span class="line"> ni 往下走一步</span><br></pre></td></tr></table></figure>
+
+
+</code></pre>
+</li>
+</ol>
+<p>   本次示例采用另一种方式生成</p>
+<ol>
+<li><p>首先以release模式生成程序然后运行</p>
+</li>
+<li><p>在任务栏找到我们的程序右键创建存储文件</p>
+</li>
+<li><p><img src="https://i.loli.net/2020/09/23/1sdOPoLUFMaSyXT.png" alt="image-20200923164636833"></p>
+</li>
+<li><p>文件默认会存储到C:\Users\你的账户名\AppData\Local\Temp\NewYunFaDan.WebAPI.DMP</p>
+</li>
+<li><p><img src="https://i.loli.net/2020/09/23/Ep64wBuY5NFtXKH.png" alt="image-20200923164549839"></p>
+</li>
+<li><pre><code class="shell">新建一个环境变量_NT_SYMBOL_PATH 值为: SRV*c:\mysymbol* http://msdl.microsoft.com/download/symbols
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">   7. 第六条的意思是所有symbol的都放到c盘mysymbol中 建议改为d盘之类的</span><br><span class="line"></span><br><span class="line">   8. 找到我们的dmp文件双击打开</span><br><span class="line"></span><br><span class="line">   9. 在Settings的Debugging Settings 中设置</span><br><span class="line"></span><br><span class="line">   10. ![image-20200923173202690](https:&#x2F;&#x2F;i.loli.net&#x2F;2020&#x2F;09&#x2F;23&#x2F;YPXnfuySz1Jxhd9.png)</span><br><span class="line"></span><br><span class="line">   11. 点击分析![image-20200923165013396](https:&#x2F;&#x2F;i.loli.net&#x2F;2020&#x2F;09&#x2F;23&#x2F;BOfWzXwphM8VECZ.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">总结</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96; shell</span><br><span class="line">#基本命令</span><br><span class="line"># 运行</span><br><span class="line">windbgx dotnet .\ConsoleApp1.dll</span><br><span class="line"># 加载coreclr</span><br><span class="line">sxe ld coreclr</span><br><span class="line"># 继续</span><br><span class="line">g</span><br><span class="line"># 加载SOS</span><br><span class="line">.load C:\Users\aaa\.dotnet\sos\sos.dll</span><br><span class="line"># 查看插件</span><br><span class="line">.chain</span><br><span class="line"># 函数断点</span><br><span class="line">!bpmd ConsoleApp1.dll ConsoleApp1.Program.Main</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ol>
+<p>此处附加参考连接：<a href="https://www.cnblogs.com/bluedoctor/p/4813125.html">他人博客</a>，<a href="https://www.cnblogs.com/djian/p/debug-dotnet-with-windbg.html">引用2</a>，<a href="https://www.jqhtml.com/55095.html">调试docker下的dmp</a>，<a href="https://blog.csdn.net/keidoekd2345/article/details/50125747/">直接调试</a></p>
+<hr>
+<h2 id="Linq拓展"><a href="#Linq拓展" class="headerlink" title="Linq拓展"></a>Linq拓展</h2><ul>
+<li><p>使用聚合linq查询</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="comment">//添加模型</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Model</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">int</span> Count &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//增加扩展方法</span></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">LinqExtenion</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 获取集合最小值</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;TSouce&quot;&gt;</span><span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;TCompareValue&quot;&gt;</span><span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;source&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;comparerExpression&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> TSouce <span class="title">MinItem</span>&lt;<span class="title">TSouce</span>, <span class="title">TCompareValue</span>&gt;(<span class="params"><span class="keyword">this</span> IEnumerable&lt;TSouce&gt; source,</span></span></span><br><span class="line"><span class="function"><span class="params">          Func&lt;TSouce, TCompareValue&gt; comparerExpression</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> comparer = Comparer&lt;TCompareValue&gt;.Default;</span><br><span class="line">            <span class="keyword">return</span> source.Aggregate((minValue, item) =&gt;</span><br><span class="line">            &#123;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">var</span> result = comparer.Compare(comparerExpression(minValue), comparerExpression(item));</span><br><span class="line">                <span class="keyword">return</span> result &lt; <span class="number">0</span> ? minValue : item;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//使用</span></span><br><span class="line">models1.MinItem(x =&gt; x.Count);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>并行化</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> query1 = (<span class="keyword">from</span> n <span class="keyword">in</span> models2.AsParallel()</span><br><span class="line">                          <span class="keyword">where</span> n.Count &gt; <span class="number">18</span> </span><br><span class="line">                          <span class="keyword">select</span> n).ToList();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>词频统计</p>
+<p><img src="https://i.loli.net/2020/09/23/Xkp6nL5QmCvzWdc.png" alt="image-20200923231855893"></p>
+</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> words = File.ReadAllText(<span class="string">&quot;Data.txt&quot;</span>).Split(<span class="string">&#x27; &#x27;</span>);</span><br><span class="line">           <span class="keyword">var</span> map = words.AsParallel().ToLookup(p =&gt; p, k =&gt; <span class="number">1</span>);</span><br><span class="line">           <span class="keyword">var</span> reduce = <span class="keyword">from</span> IGrouping&lt;<span class="keyword">string</span>, <span class="keyword">int</span>&gt; wordMap <span class="keyword">in</span> map.AsParallel()</span><br><span class="line">               <span class="keyword">where</span> wordMap.Count() &gt; <span class="number">1</span></span><br><span class="line">               <span class="keyword">select</span> <span class="keyword">new</span> &#123;Word = wordMap.Key, Count = wordMap.Count()&#125;;</span><br><span class="line">  </span><br><span class="line">           <span class="keyword">foreach</span> (<span class="keyword">var</span> word <span class="keyword">in</span> reduce)</span><br><span class="line">           &#123;</span><br><span class="line">               Console.WriteLine(<span class="string">$&quot;Word: <span class="subst">&#123;word.Word&#125;</span>,Count:<span class="subst">&#123;word.Count&#125;</span>&quot;</span>);</span><br><span class="line">         &#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="IO处理"><a href="#IO处理" class="headerlink" title="IO处理"></a>IO处理</h2><h4 id="字符串切分"><a href="#字符串切分" class="headerlink" title="字符串切分"></a>字符串切分</h4><figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"> <span class="keyword">var</span> str = <span class="string">&quot;Times:10086&quot;</span>;</span><br><span class="line">        <span class="keyword">var</span> strSpan = str.AsSpan();</span><br><span class="line">        <span class="keyword">var</span> sw = <span class="keyword">new</span> Stopwatch();</span><br><span class="line">        sw.Start();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; <span class="number">1000000</span>; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span>.Parse(strSpan.Slice(<span class="number">6</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        sw.Stop();</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;耗时&quot;</span> + sw.ElapsedMilliseconds);</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">        sw.Restart();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; <span class="number">1000000</span>; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span>.Parse(str.Substring(<span class="number">6</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        sw.Stop();</span><br><span class="line">      Console.WriteLine(<span class="string">&quot;耗时&quot;</span> + sw.ElapsedMilliseconds);</span><br><span class="line">sw.Restart();</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; <span class="number">1000000</span>; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span>.Parse(str[<span class="number">6.</span>.]);</span><br><span class="line">        &#125;</span><br><span class="line">        sw.Stop();</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;耗时&quot;</span> + sw.ElapsedMilliseconds);</span><br></pre></td></tr></table></figure>
+
+<h4 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h4><figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 源文件</span></span><br><span class="line">         <span class="keyword">using</span> <span class="keyword">var</span> originalFileStream = File.OpenRead(<span class="string">&quot;data.txt&quot;</span>);</span><br><span class="line">         <span class="comment">// 目标压缩文件</span></span><br><span class="line">         <span class="keyword">using</span> <span class="keyword">var</span> compressedFileStream = File.Create(<span class="string">&quot;data.gz&quot;</span>);</span><br><span class="line">         <span class="comment">// 创建压缩流对象</span></span><br><span class="line">         <span class="keyword">using</span> <span class="keyword">var</span> compressionStream = <span class="keyword">new</span> GZipStream(compressedFileStream, </span><br><span class="line">             CompressionMode.Compress);</span><br><span class="line">         <span class="comment">// 源文件内容写入压缩流</span></span><br><span class="line">       originalFileStream.CopyTo(compressionStream);</span><br></pre></td></tr></table></figure>
+
+
+
+
+</li>
+</ul>
+<hr>
+<h2 id="Core-多线程与异步"><a href="#Core-多线程与异步" class="headerlink" title="Core 多线程与异步"></a>Core 多线程与异步</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><ul>
+<li><p>原生线程 ：操作系统负责管理</p>
+</li>
+<li><p>托管线程：基于原生线程，由.NET管理的线程（如Thread对象）</p>
+</li>
+<li><p>线程切换：主动切换，被动切换</p>
+</li>
+<li><p>主动切换： 线程对应的任务主动要求暂停线程的运行</p>
+</li>
+<li><p>被动切换：程序运行超过一段时间后被强制切换，抢占，最大时间即为时间片</p>
+</li>
+<li><p>上下文：保存某个时间点上的CPU中各个寄存器的值的数据结构</p>
+</li>
+<li><p>上下文切换：</p>
+<p><img src="https://i.loli.net/2020/09/24/xP3B4hFcuseQv5E.png" alt="image-20200924125537211"></p>
+<ul>
+<li><p>线程调度：</p>
+<p><img src="https://i.loli.net/2020/09/24/ZYb6fk1tnLAEyve.png" alt="image-20200924125719550"></p>
+<ul>
+<li><p>托管线程有两种模式：抢占模式（不能访问托管堆上的对象）、合作模式（可以自由的访问托管堆上的对象）</p>
+</li>
+<li><p>托管线程数据结构：线程本地存储，托管函数，非托管函数的切换记录，分配上下文，执行上下文，同步上下文</p>
+</li>
+<li><p>锁：</p>
+<ul>
+<li><p>无锁算法：不使用线程锁，通过修改操作的内容使它们满足原子操作的条件,如：</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line">System.Collections.Consurrent.CurrentBag</span><br><span class="line">System.Collections.Consurrent.CurrentDictionary&lt;TKey, TValue&gt;</span><br><span class="line">System.Collections.Consurrent.CurrentQueue</span><br><span class="line">System.Collections.Consurrent.CurrentStack</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>线程锁：有获取锁（Acquire）和释放锁（Release）两个操作，在获取锁之后和释放锁之前进行的操作保证在同一个时间只有一个线程执行，操作内容无需改变，所以线程锁具有很强的通用性</p>
+<ul>
+<li>自旋锁：当一个线程在获取锁对象的时候，如果锁被其它线程获取，那么这个线程<br>会循环等待，然后不断的判断锁是否能够成功获取，直到获取到锁才会退出循环。</li>
+<li>Mutex互斥锁：适用于一个共享资源每次只能被一个线程访问的情况。</li>
+<li>混合锁：重试一定的次数，超过一定次数后再安排当前的线程进入等待状态,Monitor即lock</li>
+<li>信号量：生产消费者模式,常用于限制最大同时访问次数</li>
+<li>读写锁：读取锁是可以被多个线程同时获取，写入锁不可以被多个线程同时获取，适用于频繁读取且读取需要一定时间的场景</li>
+</ul>
+<p>各个锁的写法直接参考如下地址：</p>
+<p><a href="https://www.jb51.net/article/63821.htm">自旋锁</a>,<a href="https://www.cnblogs.com/nele/p/5534580.html">互斥锁</a>,<a href="https://www.cnblogs.com/lucifer1982/archive/2008/12/07/1349437.html">读写锁</a>,<a href="https://www.cnblogs.com/tcjiaan/p/4732225.html">信号量</a></p>
+</li>
+</ul>
+</li>
+<li><p>概念区分：</p>
+<ul>
+<li>async和await异步:使用异步是为了不创建大量线程，有限的线程执行大量的操作</li>
+<li>多线程：通过多个线程同时处理来提高性能</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>参考链接：<a href="https://www.cnblogs.com/chenwolong/p/await.html">async和await</a></p>
+<hr>
+<h2 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h2><h3 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h3><ul>
+<li><p>栈空间和堆空间：</p>
+<ul>
+<li>分配：为数据申请内存空间的操作</li>
+<li>释放：释放申请的内存空间的操作</li>
+<li>栈空间：每个线程都具有独立的栈空间，用于保存调用函数的数据</li>
+<li>堆空间：程序中独立的一块空间，可以被程序的所有函数所访问，不会伴随着函数返回和线程结束的过程释放</li>
+</ul>
+</li>
+<li><p>值类型和引用类型：</p>
+<ul>
+<li><p>值类型：对象本身存储值</p>
+</li>
+<li><p>引用类型：对象本身存储内存地址，值存储在地址所指向的地方</p>
+</li>
+<li><p>存储位置：一般情况下值类型存储在堆栈中，而引用类型存储在托管堆上</p>
+<p>但是如果值类型作为引用类型的成员，则作为引用类型的一部分，存储在托管堆上 <a href="https://www.cnblogs.com/xinaixia/p/5767852.html">参考链接</a></p>
+</li>
+</ul>
+</li>
+<li><p>GC:垃圾回收机制，自动找出并释放不再使用的内存空间机制</p>
+<ul>
+<li><p>方式：标记并清除 <a href="https://www.cnblogs.com/qqmomery/p/6614123.html">参考链接</a></p>
+<ul>
+<li>遍历堆，标记为非活动对象</li>
+<li>遍历堆，将未标记对象回收入堆</li>
+</ul>
+</li>
+<li><p>引用类型分代：<a href="https://blog.csdn.net/zhang_hui_cs/article/details/86653202">参考链接</a></p>
+<ul>
+<li><p>类型：第0代，第1代，第2代</p>
+</li>
+<li><p>区别：</p>
+<ul>
+<li>0：存活时间最短</li>
+<li>1：存活较长</li>
+<li>2：存活最长</li>
+</ul>
+</li>
+<li><p>方式：</p>
+<p>第0代满时执行1次GC，存活的进入1代，在GC发现1代满了就对1代进行GC，存活的进入2代，2代满时扩容2代空间</p>
+</li>
+<li><p>目的：</p>
+<ul>
+<li>增加单次回收对象数量</li>
+<li>减少处理需要的时间</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>压缩：</p>
+<ul>
+<li><p>碎片空间：反复执行分配与回收操作，可能导致堆上产生很多空余空间，这些空余空间又被称为碎片空间</p>
+</li>
+<li><p>产生目的：压缩机制可以通过移动已分配空间把碎片空间合并到一块，使得堆可以分配更大的对象</p>
+</li>
+<li><p>大小对象：根据引用类型占用空间大小区分，大对象与小对象会在不同的堆区域中分配：大对象堆和小对象堆</p>
+</li>
+<li><p>限制：移动大对象需要的成本很高，默认只在小对象堆启用，大对象堆是不会执行压缩的</p>
+</li>
+</ul>
+</li>
+<li><p>GC STW（stop the world  这全称就问你牛不牛逼哈哈）：</p>
+<ul>
+<li>概念：让执行GC处理以外的线程全都暂停运行，像这样的停止操作我们称为STW</li>
+<li>原因：对象之间的引用关系会随着程序运行不断改变，让执行GC的线程与执行其他处理的线程同时运行会带来一些问题。所以GC会在回收期间停止所有其他线程</li>
+</ul>
+</li>
+<li><p>GC模式：</p>
+<ul>
+<li>工作站模式：适用于内存占用量小的程序和桌面程序，它可以提供更短的响应时间</li>
+<li>服务器模式：适用于内存占用量大的程序与服务程序，可以提供更高的吞吐量</li>
+<li><img src="https://i.loli.net/2020/09/24/sq8DjFd1KwpGvAY.png" alt="image-20200924135758724"></li>
+<li>普通GC:会导致更长的单次STW停顿时间，但消耗的资源比较小，并且支持压缩处理。</li>
+<li>后台GC:每次STW停顿时间会更短，但停顿次数与消耗的资源会更多，并且不支持压缩处理。</li>
+<li><img src="https://i.loli.net/2020/09/24/FcEik7Yx21Zw4HO.png" alt="image-20200924135903363"></li>
+</ul>
+</li>
+<li><p>GC流程</p>
+<p><img src="https://i.loli.net/2020/09/24/EZeXVsmg8TFOcJv.png" alt="image-20200924140109496"></p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h2><ul>
+<li><p>共享内存</p>
+<p>顾名思义就是用内存映射文件来通信，不常用</p>
+<p>适用于频繁读写文件的场景，执行效率比io操作高</p>
+<p>代码使用示例如：</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> mappedFile = MemoryMappedFile.CreateOrOpen(<span class="string">&quot;test&quot;</span>, <span class="number">1024</span>, MemoryMappedFileAccess.ReadWrite);</span><br><span class="line">           <span class="keyword">var</span> access = mappedFile.CreateViewAccessor(<span class="number">0</span>,<span class="number">1024</span>);</span><br><span class="line">           <span class="keyword">var</span> strLenth = access.ReadInt32(<span class="number">0</span>);<span class="comment">//读取一共有多长</span></span><br><span class="line">           access.ReadArray(<span class="number">4</span>,<span class="keyword">new</span> <span class="keyword">char</span>[strLenth], <span class="number">0</span>, strLenth);<span class="comment">//从第4位开始读放到char[]中从char[]的第0位开始放，一共读取strLenth长度 </span></span><br><span class="line">           access.Write(<span class="number">0</span>, <span class="number">1</span>);<span class="comment">//写</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>httpClient</p>
+<p><img src="https://i.loli.net/2020/09/24/TdC7m3Zwycnj91G.png" alt="image-20200924124423404"></p>
+</li>
+</ul>
+</li>
+<li><p>socket</p>
+<p>内容过多仅提供参考地址 感兴趣的去了解了解</p>
+<p><a href="https://www.cnblogs.com/sheseido/p/11617993.html">原理</a></p>
+</li>
+</ul>
+<hr>
+<h2 id="Nuget包管理"><a href="#Nuget包管理" class="headerlink" title="Nuget包管理"></a>Nuget包管理</h2><p> 不同于以前的拷贝dll方式，微软集成了nuget包作为类库管理器，可以使用官方包也可以自己搭建私有仓库</p>
+<p>VS2019默认就有，安装方式略</p>
+<ul>
+<li><p>使用： </p>
+<ol>
+<li>右键项目依赖项–&gt; 管理Nuget服务包</li>
+<li>右上方菜单栏–&gt; Nuget包管理器–&gt;程序包管理控制台</li>
+</ol>
+</li>
+<li><p>建议新使用直接使用界面操作即可</p>
+</li>
+<li><p>添加私有仓库</p>
+<p><img src="https://i.loli.net/2020/09/24/cjpTWkfxDBt7m6o.png" alt="image-20200924150323173"></p>
+<ol>
+<li>点击上图所示齿轮</li>
+<li>点击弹出框绿色的+号</li>
+<li>输入你喜欢的名字和仓库地址点击更新</li>
+<li>确认保存</li>
+<li>在程序包源处可以切换 如果需要输入账号密码默认会弹出需要账号密码的框</li>
+<li>搜索你想要的包 选择版本安装即可</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h2 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h2><ul>
+<li><p>什么是依赖注入</p>
+<ul>
+<li>组件之间的依赖关系由容器在运行期决定，形象的来说，即由容器动态的将某种依赖关系注入到组件之中（不知道从哪里抄来的定义）</li>
+<li>通俗来说就是本来我要一个对象需要自己去new出来，比如说new个对象~，现在改了我不自己动手而是我指定一个需求（接口）让别人（容器）来帮我做（提供实例）</li>
+<li>Net Core 和Framework 开发写法大的区别就是Core的写法都是基于服务式，更有SOA的思维</li>
+<li>原则：<ul>
+<li>Hollywood原则(“Don’t call me, I’ll call you”，即，请不要调用我，我将调用你)</li>
+<li>依赖倒置原则：依赖于抽象而不依赖于具体实现</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>实现方式</p>
+<ul>
+<li><p>类型：</p>
+<ul>
+<li>构造函数注入（netcore默认支持）</li>
+<li>属性注入（第三方实现）</li>
+<li>字段注入（第三方实现）</li>
+</ul>
+</li>
+<li><p>常用第三方依赖注入：</p>
+<ul>
+<li>Autofac </li>
+<li>Unity</li>
+</ul>
+</li>
+<li><p>实现代码<a href="https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-2.1#service-lifetimes-and-registration-options">官网参考链接</a> ，<a href="https://blog.csdn.net/chenludaniel/article/details/82378894">各注入写法</a></p>
+<ul>
+<li><p>构造函数注入</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyDependency</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyDependency</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Task <span class="title">WriteMessage</span>(<span class="params"><span class="keyword">string</span> message</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Console.WriteLine(</span><br><span class="line">            <span class="string">$&quot;MyDependency.WriteMessage called. Message: <span class="subst">&#123;message&#125;</span>&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Task.FromResult(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">IndexModel</span> : <span class="title">PageModel</span></span><br><span class="line">&#123;</span><br><span class="line">    MyDependency _dependency = <span class="keyword">new</span> MyDependency();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">async</span> Task <span class="title">OnGetAsync</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">await</span> _dependency.WriteMessage(</span><br><span class="line">            <span class="string">&quot;IndexModel.OnGetAsync created this message.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IMyDependency</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function">Task <span class="title">WriteMessage</span>(<span class="params"><span class="keyword">string</span> message</span>)</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyDependency</span> : <span class="title">IMyDependency</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> ILogger&lt;MyDependency&gt; _logger;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyDependency</span>(<span class="params">ILogger&lt;MyDependency&gt; logger</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        _logger = logger;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Task <span class="title">WriteMessage</span>(<span class="params"><span class="keyword">string</span> message</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        _logger.LogInformation(</span><br><span class="line">            <span class="string">&quot;MyDependency.WriteMessage called. Message: &#123;Message&#125;&quot;</span>, </span><br><span class="line">            message);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Task.FromResult(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">services.AddSingleton(<span class="keyword">typeof</span>(ILogger&lt;&gt;), <span class="keyword">typeof</span>(Logger&lt;&gt;));</span><br><span class="line">   services.AddScoped&lt;IMyDependency, MyDependency&gt;();</span><br><span class="line">    services.AddTransient&lt;IOperationTransient, Operation&gt;();</span><br><span class="line">    services.AddScoped&lt;IOperationScoped, Operation&gt;();</span><br><span class="line">    services.AddSingleton&lt;IOperationSingleton, Operation&gt;();</span><br><span class="line">    services.AddSingleton&lt;IOperationSingletonInstance&gt;(<span class="keyword">new</span> Operation(Guid.Empty));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生命周期</p>
+<ul>
+<li>AddScoped 本次请求内同一个实例</li>
+<li>AddTransient 每次都新实例</li>
+<li>AddSingleton 单例</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>控制台下使用依赖注入</p>
+<ul>
+<li><p>首先创建一个Core类库项目</p>
+</li>
+<li><p>引入nuget包<img src="https://i.loli.net/2020/09/24/Is6MS95AwajngrV.png" alt="image-20200924142440336"></p>
+</li>
+<li><pre><code class="c#">public static class InjectEngineCore
+    &#123;
+    //服务提供者角色
+        private static IServiceProvider serviceProvider;
+    //存储注入的服务
+        private static IServiceCollection services = new ServiceCollection();
+    //注入服务
+        public static void Init(Action&lt;IServiceCollection&gt; action)
+        &#123;
+            action(services);
+            //将注入的服务生成到服务提供者中
+            serviceProvider = services.BuildServiceProvider();
+        &#125;
+    //获取服务
+        public static T Resolve&lt;T&gt;() where T : class
+        &#123;
+            return serviceProvider.GetService&lt;T&gt;();
+        &#125;
+    &#125;
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">- 接下来可以在所有引用了这个类库项目的地方使用了</span><br><span class="line"></span><br><span class="line">- &#96;&#96;&#96; c#</span><br><span class="line">  Engines.InjectEngineCore.Init(c &#x3D;&gt;</span><br><span class="line">              &#123;</span><br><span class="line">                  c.AddAutoMapper(typeof(MapperProfiles).Assembly);</span><br><span class="line">              &#125;);</span><br><span class="line">             var mapper &#x3D;  Engines.InjectEngineCore.Resolve&lt;IMapper&gt;();&#x2F;&#x2F;使用方式</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+<p><a href="https://www.cnblogs.com/Wddpct/p/7219205.html">参考链接</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><ul>
+<li><p>NetCore中读取配置文件</p>
+<p>在WebApi中Core默认已经注入了appsettings.json，而且是可以动态更新的，所以使用上较为简单</p>
+<p>打开Startup文件</p>
+<p>默认Core已经帮我们注入了配置文件服务</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> IConfiguration Configuration &#123; <span class="keyword">get</span>; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以我们只需要</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line">Configuration.GetSection(<span class="string">&quot;ConnectionStrings&quot;</span>)</span><br><span class="line">Configuration.GetSection(<span class="string">&quot;ConnectionStrings:defaultConnStr&quot;</span>).Value</span><br></pre></td></tr></table></figure>
+
+<p>当然这样用就不够优雅，毕竟每个地方都需要注入这个配置信息显得咱们不够oop思想</p>
+<p>所以接下来我们定义一个类</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HotSetting</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="keyword">public</span> <span class="keyword">string</span> Key1 &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在依然回到Startup 文件中（你大部分操作都在这个文件）</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line">services.Configure&lt;HotSetting&gt;(Configuration.GetSection(<span class="string">&quot;HotSettings&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>之后我们就可以通过构造函数注入获取这个对象的具体内容了</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line">IOptionsMonitor&lt;HotSetting&gt; options;<span class="comment">//热更新重新载入最新数据</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Service</span>(<span class="params">IOptionsMonitor&lt;HotSetting&gt; _options</span>)</span> &#123; </span><br><span class="line">            options = _options;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">Test</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">return</span> options.CurrentValue.Key1;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+</li>
+</ul>
+<hr>
+<h2 id="日志组件"><a href="#日志组件" class="headerlink" title="日志组件"></a>日志组件</h2><p>有了上面的依赖注入的基础 日志组件就没什么难度了</p>
+<ul>
+<li><p>首先引入nlog包 NLog.Web.AspNetCore</p>
+</li>
+<li><p>修改Nlog.config</p>
+</li>
+<li><pre><code class="scheme">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;nlog xmlns=&quot;http://www.nlog-project.org/schemas/NLog.xsd&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; autoReload=&quot;true&quot; internalLogLevel=&quot;Info&quot;&gt;
+    &lt;!-- 启用.net core的核心布局渲染器 --&gt;
+    &lt;extensions&gt;
+        &lt;add assembly=&quot;NLog.Web.AspNetCore&quot; /&gt;
+    &lt;/extensions&gt;
+    &lt;!-- 写入日志的目标配置 --&gt;
+    &lt;targets&gt;
+        &lt;!-- 调试  --&gt;
+        &lt;target xsi:type=&quot;File&quot; name=&quot;debug&quot; fileName=&quot;logs/debug-$&#123;shortdate&#125;.log&quot; layout=&quot;$&#123;longdate&#125;|$&#123;event-properties:item=EventId_Id&#125;|$&#123;uppercase:$&#123;level&#125;&#125;|$&#123;logger&#125;|$&#123;message&#125; $&#123;exception:format=tostring&#125;|url: $&#123;aspnet-request-url&#125;|action: $&#123;aspnet-mvc-action&#125;&quot; /&gt;
+        &lt;!-- 警告  --&gt;
+        &lt;target xsi:type=&quot;File&quot; name=&quot;warn&quot; fileName=&quot;logs/warn-$&#123;shortdate&#125;.log&quot; layout=&quot;$&#123;longdate&#125;|$&#123;event-properties:item=EventId_Id&#125;|$&#123;uppercase:$&#123;level&#125;&#125;|$&#123;logger&#125;|$&#123;message&#125; $&#123;exception:format=tostring&#125;|url: $&#123;aspnet-request-url&#125;|action: $&#123;aspnet-mvc-action&#125;&quot; /&gt;
+        &lt;!-- 错误  --&gt;
+        &lt;target xsi:type=&quot;File&quot; name=&quot;error&quot; fileName=&quot;logs/error-$&#123;shortdate&#125;.log&quot; layout=&quot;$&#123;longdate&#125;|$&#123;event-properties:item=EventId_Id&#125;|$&#123;uppercase:$&#123;level&#125;&#125;|$&#123;logger&#125;|$&#123;message&#125; $&#123;exception:format=tostring&#125;|url: $&#123;aspnet-request-url&#125;|action: $&#123;aspnet-mvc-action&#125;&quot; /&gt;
+    &lt;/targets&gt;
+    &lt;!-- 映射规则 --&gt;
+    &lt;rules&gt;
+        &lt;!-- 调试  --&gt;
+        &lt;logger name=&quot;*&quot; minlevel=&quot;Trace&quot; maxlevel=&quot;Debug&quot; writeTo=&quot;debug&quot; /&gt;
+        &lt;!--跳过不重要的微软日志--&gt;
+        &lt;logger name=&quot;Microsoft.*&quot; maxlevel=&quot;Info&quot; final=&quot;true&quot; /&gt;
+        &lt;!-- 警告  --&gt;
+        &lt;logger name=&quot;*&quot; minlevel=&quot;Info&quot; maxlevel=&quot;Warn&quot; writeTo=&quot;warn&quot; /&gt;
+        &lt;!-- 错误  --&gt;
+        &lt;logger name=&quot;*&quot; minlevel=&quot;Error&quot; maxlevel=&quot;Fatal&quot; writeTo=&quot;error&quot; /&gt;
+    &lt;/rules&gt;
+&lt;/nlog&gt;
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">- 在Program.cs文件中ConfigureWebHostDefaults 后加入</span><br><span class="line"></span><br><span class="line">- &#96;&#96;&#96; c#</span><br><span class="line">  .UseNLog()</span><br></pre></td></tr></table></figure></code></pre>
+</li>
+<li><p>依然用构造函数使用即可</p>
+</li>
+<li><pre><code class="c#"> private readonly ILogger&lt;HomeController&gt; _logger;
+
+    public HomeController(ILogger&lt;HomeController&gt; logger)
+    &#123;
+        _logger = logger;
+    &#125;
+
+    public IActionResult Index()
+    &#123;
+        _logger.LogInformation(&quot;Index page says hello&quot;);
+        return View();
+    &#125;
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  当然这个只是基础做法 在我们具体项目中只需要把异常抛出来即可，自然会有相关异常中间件去处理，有关中间件的概念详情见其他章节</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 认证与授权</span><br><span class="line"></span><br><span class="line">- 目的：验证请求API的用户，获取用户相关信息，控制</span><br><span class="line"></span><br><span class="line">- 目前项目中使用JWT作为授权的组件</span><br><span class="line"></span><br><span class="line">- 首先添加 nuget引用 Microsoft.AspNetCore.Authentication.JwtBearer</span><br><span class="line"></span><br><span class="line">- 添加配置参数对象</span><br><span class="line"></span><br><span class="line">- &#96;&#96;&#96; c#</span><br><span class="line">   public class TokenManagement</span><br><span class="line">      &#123;</span><br><span class="line">          &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">          &#x2F;&#x2F;&#x2F; &#x2F;&#x2F;密钥最小16位</span><br><span class="line">          &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">          [JsonProperty(&quot;secret&quot;)]</span><br><span class="line">          public string Secret &#123; get; set; &#125;</span><br><span class="line">          &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">          &#x2F;&#x2F;&#x2F; 发出者</span><br><span class="line">          &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">          [JsonProperty(&quot;issuer&quot;)]</span><br><span class="line">          public string Issuer &#123; get; set; &#125;</span><br><span class="line">          &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">          &#x2F;&#x2F;&#x2F; 接收者</span><br><span class="line">          &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">          [JsonProperty(&quot;audience&quot;)]</span><br><span class="line">          public string Audience &#123; get; set; &#125;</span><br><span class="line">    </span><br><span class="line">          [JsonProperty(&quot;accessExpiration&quot;)]</span><br><span class="line">          public int AccessExpiration &#123; get; set; &#125;</span><br><span class="line">    </span><br><span class="line">          [JsonProperty(&quot;refreshExpiration&quot;)]</span><br><span class="line">          public int RefreshExpiration &#123; get; set; &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure></code></pre>
+</li>
+<li><p>在startup.cs文件中加入</p>
+</li>
+<li><pre><code class="c#"> services.Configure&lt;TokenManagement&gt;(configuration.GetSection(&quot;tokenManagement&quot;));
+            var token = configuration.GetSection(&quot;tokenManagement&quot;).Get&lt;TokenManagement&gt;();
+            services.AddSingleton&lt;JwtService&gt;();
+            services.AddAuthentication(x =&gt; &#123;
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            &#125;).AddJwtBearer(x =&gt; &#123;
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                &#123;
+                    ValidateIssuerSigningKey = true,//验证签名
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(token.Secret)),
+                    ValidIssuer = token.Issuer,
+                    ValidAudience = token.Audience,
+                    ValidateIssuer = false,//不验证是谁发出的
+                    ValidateAudience = false//不验证谁拿到的
+                &#125;;
+            &#125;);
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">- 接下来我们补上JwtService服务</span><br><span class="line"></span><br><span class="line">- &#96;&#96;&#96; c#</span><br><span class="line">  public class JwtService</span><br><span class="line">      &#123;</span><br><span class="line">          private readonly TokenManagement _tokenManagement;</span><br><span class="line">          public JwtService(IOptions&lt;TokenManagement&gt; options)</span><br><span class="line">          &#123;</span><br><span class="line">              _tokenManagement &#x3D; options.Value;</span><br><span class="line">          &#125;</span><br><span class="line">          &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">          &#x2F;&#x2F;&#x2F; 创建token</span><br><span class="line">          &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">          &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;user&quot;&gt;&lt;&#x2F;param&gt;</span><br><span class="line">          &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;token&quot;&gt;&lt;&#x2F;param&gt;</span><br><span class="line">          &#x2F;&#x2F;&#x2F; &lt;returns&gt;&lt;&#x2F;returns&gt;</span><br><span class="line">          public bool GenerateToken(UserLoginInfoDTO user, out string token)</span><br><span class="line">          &#123;</span><br><span class="line">              token &#x3D; string.Empty;</span><br><span class="line">  </span><br><span class="line">              &#x2F;&#x2F;增加需要返回的用户信息</span><br><span class="line">              var claims &#x3D; new[]</span><br><span class="line">              &#123;</span><br><span class="line">                  new Claim(ClaimTypes.Name,user.UserName),</span><br><span class="line">                  new Claim(ClaimTypes.MobilePhone,user.Moblie),</span><br><span class="line">                  new Claim(ClaimTypes.Sid,user.Id.ToString()),</span><br><span class="line">                  new Claim(ClaimTypes.PrimarySid,user.BefId.ToString()),</span><br><span class="line">                  new Claim(ClaimTypes.Role,user.UserLevel.ToInt().ToString())</span><br><span class="line">  </span><br><span class="line">              &#125;;</span><br><span class="line">              var key &#x3D; new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));</span><br><span class="line">              var credentials &#x3D; new SigningCredentials(key, SecurityAlgorithms.HmacSha256);</span><br><span class="line">              var jwtToken &#x3D; new JwtSecurityToken(_tokenManagement.Issuer, _tokenManagement.Audience, claims, expires: DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration), signingCredentials: credentials);</span><br><span class="line">  </span><br><span class="line">              token &#x3D; new JwtSecurityTokenHandler().WriteToken(jwtToken);</span><br><span class="line">              return true;</span><br><span class="line">          &#125;</span><br><span class="line">  </span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure></code></pre>
+</li>
+<li><p>使用在需要授权的方法或者控制器上加上特性</p>
+</li>
+<li><pre><code class="c#">[Authorize]
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">- 用户信息存放</span><br><span class="line"></span><br><span class="line">- &#96;&#96;&#96; c#</span><br><span class="line">  jwtHelper.GenerateToken(res, out string token)</span><br></pre></td></tr></table></figure></code></pre>
+</li>
+<li><p>用户信息获取</p>
+</li>
+<li><pre><code class="c#"> public static UserLoginInfoDTO GetUserDto(IEnumerable&lt;Claim&gt; claimInfos)
+        &#123;
+            var user = new UserLoginInfoDTO();
+            //反解析
+            var claims = claimInfos.ToList();
+            user.UserName = claims[0].Value;
+            user.Moblie = claims[1].Value;
+            user.Id = claims[2].Value.ToInt();
+            user.BefId = claims[3].Value.ToInt();
+            user.UserLevel = (TBUser.UserLevelEnum)claims[4].Value.ToInt();
+            return user;
+         &#125;</code></pre>
+</li>
+</ul>
+<hr>
+<h2 id="Core-Api性能压测"><a href="#Core-Api性能压测" class="headerlink" title="Core Api性能压测"></a>Core Api性能压测</h2><ul>
+<li>工具： jmeter</li>
+<li>目标：希望每个人都能对自己的代码性能如何有所预估</li>
+<li>下载：<a href="">百度云地址</a>，提取码: tshi </li>
+<li>安装：安装java jdk，设置环境变量，解压jmeter到全英文目录</li>
+<li>使用：打开ApacheJMeter.jar或jmeter.bat都行</li>
+<li>打开后先别忙着懵逼，我们只需要模拟http请求即可，所以步骤如下：</li>
+<li>首先按如图所示创建测试线程组</li>
+<li><img src="https://i.loli.net/2020/09/24/3XmhyRdl71Pnxw2.png" alt="image-20200924151901224"></li>
+<li>修改为一个好听的名字</li>
+<li><img src="https://i.loli.net/2020/09/24/XjEbSHw8okcLJIO.png" alt="image-20200924151958089"></li>
+<li>这里就可以控制 同时开启多少个线程目前设置为1</li>
+<li>右键点击添加http请求</li>
+<li><img src="https://i.loli.net/2020/09/24/bmoT2LZO6ANP4DK.png" alt="image-20200924152052698"></li>
+<li>这里就可以添加一些请求地址，请求参数等信息</li>
+<li>但是平时我们接口都是有权限的 所以我们还需要增加新的组件</li>
+<li><img src="https://i.loli.net/2020/09/24/A5eCyotKzE38Faq.png" alt="image-20200924152344255"></li>
+<li>可以看到有很多可选的组件 这里我们选择http信息头管理器</li>
+<li>这个时候我们需要看结果报告了，咋办呢</li>
+<li><img src="https://i.loli.net/2020/09/24/9R2aZcD8HNJAojm.png" alt="image-20200924152519438"></li>
+<li>这里我们添加聚合报告和查看结果树2个组件</li>
+<li>结果树可以让我们查看每个请求的返回信息，聚合报告可以让我们查看接口的并发承受情况</li>
+<li>一般我们参考聚合报告的90%分位这项指标作为并发吞吐量的依据</li>
+</ul>
+<hr>
+<h2 id="现有框架代码解释"><a href="#现有框架代码解释" class="headerlink" title="现有框架代码解释"></a>现有框架代码解释</h2><p>目前架构图</p>
+<p><img src="https://i.loli.net/2020/09/24/AsbSrX6VhGYT1fK.png" alt="image-20200924162334453"></p>
+<p>组件：</p>
+<ul>
+<li>nswag swagger的替代版 功能差不多</li>
+<li>jwt token权限验证</li>
+<li>singnal 基于socket的通信协议</li>
+<li>nlog日志组件</li>
+<li>Nacos配置中心组件</li>
+<li>automapper 对象转换组件</li>
+<li>protobuf-net.Grpc.AspNetCore  Grpc组件</li>
+<li>efcore 组件</li>
+<li>自定义异常中间件组件</li>
+<li>跨域组件</li>
+<li>自定义返回模型组件</li>
+<li>mysql操作组件</li>
+</ul>
+]]></content>
+      <categories>
+        <category>.NetCore</category>
+      </categories>
+      <tags>
+        <tag>.Net Core</tag>
+      </tags>
+  </entry>
+</search>
