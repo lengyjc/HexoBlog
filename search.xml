@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>Hello World</title>
-    <url>/HexoBlog/2020/09/24/hello-world/</url>
+    <url>/2020/09/24/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
 
@@ -20,7 +20,7 @@
   </entry>
   <entry>
     <title>.Net Core查漏补缺</title>
-    <url>/HexoBlog/2020/09/24/NetCore%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/</url>
+    <url>/2020/09/24/NetCore%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/</url>
     <content><![CDATA[<h1 id="Net-Core查漏补缺概论"><a href="#Net-Core查漏补缺概论" class="headerlink" title=".Net Core查漏补缺概论"></a>.Net Core查漏补缺概论</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>.Net Core作为Net系技术的一个大趋势，在现在这个竞争条件下已经是基础技能之一，不会.Net Core的已经基本上可以说落后于潮流了，本次主要目的就是为了给大家给.Net Core知识进行查漏补缺并以此来讲解目前后台框架的开发使用。</p>
 <p><img src="https://i.loli.net/2020/09/26/JD2akpt5GXAWu4L.jpg" alt="111"></p>
 <hr>
@@ -597,7 +597,7 @@
   </entry>
   <entry>
     <title>Hexo博客搭建与美化整理</title>
-    <url>/HexoBlog/2020/09/27/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E4%B8%8E%E7%BE%8E%E5%8C%96%E6%95%B4%E7%90%86/</url>
+    <url>/2020/09/27/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E4%B8%8E%E7%BE%8E%E5%8C%96%E6%95%B4%E7%90%86/</url>
     <content><![CDATA[<h2 id="Npm安装"><a href="#Npm安装" class="headerlink" title="Npm安装"></a>Npm安装</h2><ol>
 <li>使用说明</li>
 </ol>
@@ -611,7 +611,7 @@
   </entry>
   <entry>
     <title>Nacos控制台使用(热加载)</title>
-    <url>/HexoBlog/2020/09/27/Nacos%E6%8E%A7%E5%88%B6%E5%8F%B0%E4%BD%BF%E7%94%A8(%E7%83%AD%E5%8A%A0%E8%BD%BD)/</url>
+    <url>/2020/09/27/Nacos%E6%8E%A7%E5%88%B6%E5%8F%B0%E4%BD%BF%E7%94%A8(%E7%83%AD%E5%8A%A0%E8%BD%BD)/</url>
     <content><![CDATA[<h2 id="Nacos控制台使用（热加载）"><a href="#Nacos控制台使用（热加载）" class="headerlink" title="Nacos控制台使用（热加载）"></a>Nacos控制台使用（热加载）</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>在NetCore控制台Or类库中使用依赖注入并热更新，即每次在发布配置后运行的服务或者控制台程序可以在秒级更新配置信息</p>
 <h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><ul>
 <li>Nacos 魔改版本<ul>
