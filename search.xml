@@ -70,30 +70,11 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2020/09/24/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>.Net Core查漏补缺</title>
     <url>/2020/09/24/NetCore%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/</url>
-    <content><![CDATA[<h1 id="Net-Core查漏补缺概论"><a href="#Net-Core查漏补缺概论" class="headerlink" title=".Net Core查漏补缺概论"></a>.Net Core查漏补缺概论</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>.Net Core作为Net系技术的一个大趋势，在现在这个竞争条件下已经是基础技能之一，不会.Net Core的已经基本上可以说落后于潮流了，本次主要目的就是为了给大家给.Net Core知识进行查漏补缺并以此来讲解目前后台框架的开发使用。</p>
+    <content><![CDATA[<h1 id="概论"><a href="#概论" class="headerlink" title="概论"></a>概论</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>.Net Core作为Net系技术的一个大趋势，在现在这个竞争条件下已经是基础技能之一，不会.Net Core的已经基本上可以说落后于潮流了，本次主要目的就是为了给大家给.Net Core知识进行查漏补缺并以此来讲解目前后台框架的开发使用。</p>
 <p><img src="https://i.loli.net/2020/09/26/JD2akpt5GXAWu4L.jpg" alt="111"></p>
-<hr>
-<h2 id="Net-Core-基础"><a href="#Net-Core-基础" class="headerlink" title=".Net Core 基础"></a>.Net Core 基础</h2><p>.Net Core由4个支柱项目构成<strong>CoreCLR</strong>、<strong>CoreFx</strong>、<strong>CLI</strong>、<strong>Rolsyn</strong></p>
+<h2 id="Net-Core-是什么"><a href="#Net-Core-是什么" class="headerlink" title=".Net Core 是什么"></a>.Net Core 是什么</h2><p>.Net Core由4个支柱项目构成<strong>CoreCLR</strong>、<strong>CoreFx</strong>、<strong>CLI</strong>、<strong>Rolsyn</strong></p>
 <ul>
 <li>CoreCLR : .NetCore公共语言运行时，是由C++编写的。</li>
 <li>CoreFX：Framework 的CLR演化而来，与CLR结构一致,完全由C#编写，CLR使用JIT解析代码，提供异常处理机制，不同平台的线程处理，GC。</li>
@@ -108,8 +89,7 @@
 <li>参考学习链接<a href="https://docs.microsoft.com/en-us/dotnet/standard/analyzers/portability-analyzer">微软官方</a>，<a href="https://www.cnblogs.com/qtiger/p/13029562.html">博客</a>,<a href="https://www.cnblogs.com/shanyou/archive/2014/12/07/4149637.html">张善友博客</a></li>
 </ul>
 <p>Core源码仓库地址:<a href="https://github.com/dotnet">源码仓库</a>,<a href="https://github.com/dotnet/runtime">runtime</a></p>
-<hr>
-<h2 id="Net-Core-WinDbg基本调试"><a href="#Net-Core-WinDbg基本调试" class="headerlink" title=".Net Core WinDbg基本调试"></a>.Net Core WinDbg基本调试</h2><ul>
+<h1 id="Net-Core基础使用"><a href="#Net-Core基础使用" class="headerlink" title=".Net Core基础使用"></a>.Net Core基础使用</h1><h2 id="WinDbg基本调试"><a href="#WinDbg基本调试" class="headerlink" title="WinDbg基本调试"></a>WinDbg基本调试</h2><ul>
 <li>工具： windbg 分为2个版本传统版和预览版 区别在于界面</li>
 <li>术语： dmp可以理解为内存状态快照，pdb 程序数据库文件，Symbol 数据信息符号文件包含exe的调试信息</li>
 <li>下载：<a href="https://dl.pconline.com.cn/download/770876.html">地址</a>,<a href="https://docs.microsoft.com/zh-cn/windows-hardware/drivers/debugger/debugger-download-tools">官网下载</a></li>
@@ -120,7 +100,7 @@
 <p>在刚刚程序中点击修改 然后在修改界面中选择安装如图所示的功能</p>
 <p><img src="https://i.loli.net/2020/09/23/tHcyMUXV8wg6hDO.png" alt="image-20200923212648889"></p>
 <p>此版本为传统版本</p>
-<h3 id="使用步骤："><a href="#使用步骤：" class="headerlink" title="使用步骤："></a>使用步骤：</h3><h4 id="1-安装-Net-Core-dbg调试插件-SOS"><a href="#1-安装-Net-Core-dbg调试插件-SOS" class="headerlink" title="1. 安装.Net Core dbg调试插件 SOS"></a>1. 安装.Net Core dbg调试插件 SOS</h4><p>windbg是一个空壳，所以我们要使用sos(son of strike)调试插件</p>
+<h3 id="使用步骤："><a href="#使用步骤：" class="headerlink" title="使用步骤："></a>使用步骤：</h3><h4 id="安装-Net-Core-dbg调试插件-SOS"><a href="#安装-Net-Core-dbg调试插件-SOS" class="headerlink" title="安装.Net Core dbg调试插件 SOS"></a>安装.Net Core dbg调试插件 SOS</h4><p>windbg是一个空壳，所以我们要使用sos(son of strike)调试插件</p>
 <ul>
 <li><p>方式一：</p>
 <p>从<a href="https://github.com/dotnet/diagnostics">官方</a>下载源码 点击restore.bat然后再点击build.cmd </p>
@@ -150,7 +130,7 @@
 <p>参考链接 <a href="https://www.cnblogs.com/faron/articles/4360962.html">32位程序错误</a></p>
 </li>
 </ul>
-<h4 id="2-简单的调试"><a href="#2-简单的调试" class="headerlink" title="2. 简单的调试"></a>2. 简单的调试</h4><p>输入指令</p>
+<h4 id="简单的调试"><a href="#简单的调试" class="headerlink" title="简单的调试"></a>简单的调试</h4><p>输入指令</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sxe ld coreclr</span><br></pre></td></tr></table></figure>
 
 <p>其中sxe 表示设置事件触发，ld为load的缩写 表示加载，整句话表示在加载coreclr时候中断</p>
@@ -166,7 +146,7 @@
 <p>继续按g执行可以看到如图所示停在第一个断点上</p>
 <p><img src="https://i.loli.net/2020/09/23/vopzI4qDQRi6KjU.png" alt="image-20200923223651821"></p>
 <p>更多的指令可以参考<a href="https://www.cnblogs.com/kekec/archive/2012/12/02/2798020.html">博客</a> 或者自行百度，谷歌搜索</p>
-<h4 id="3-创建dmp文件"><a href="#3-创建dmp文件" class="headerlink" title="3. 创建dmp文件"></a>3. 创建dmp文件</h4><ol>
+<h4 id="创建dmp文件"><a href="#创建dmp文件" class="headerlink" title="创建dmp文件"></a>创建dmp文件</h4><ol>
 <li><p>下载ProcDump <a href="https://docs.microsoft.com/zh-cn/sysinternals/downloads/procdump">下载</a></p>
 </li>
 <li><p>使用自带工具D:\Windows Kits\10\Debuggers\x86下的adplus.exe工具抓取 运行后可以在帮助文档中查看命令</p>
@@ -388,8 +368,7 @@
 <p><a href="https://www.cnblogs.com/sheseido/p/11617993.html">原理</a></p>
 </li>
 </ul>
-<hr>
-<h2 id="Nuget包管理"><a href="#Nuget包管理" class="headerlink" title="Nuget包管理"></a>Nuget包管理</h2><p> 不同于以前的拷贝dll方式，微软集成了nuget包作为类库管理器，可以使用官方包也可以自己搭建私有仓库</p>
+<h1 id="Net-Core-应用"><a href="#Net-Core-应用" class="headerlink" title="Net Core 应用"></a>Net Core 应用</h1><h2 id="Nuget包管理"><a href="#Nuget包管理" class="headerlink" title="Nuget包管理"></a>Nuget包管理</h2><p> 不同于以前的拷贝dll方式，微软集成了nuget包作为类库管理器，可以使用官方包也可以自己搭建私有仓库</p>
 <p>VS2019默认就有，安装方式略</p>
 <ul>
 <li><p>使用： </p>
