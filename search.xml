@@ -643,4 +643,118 @@
         <tag>.Net Core</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Sonarqube质量分析部署与使用</title>
+    <url>/2020/09/29/Sonarqube%E8%B4%A8%E9%87%8F%E5%88%86%E6%9E%90%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h1 id="基础准备"><a href="#基础准备" class="headerlink" title="基础准备"></a>基础准备</h1><ul>
+<li>Linux服务器一台</li>
+<li>Shell软件一个 推荐XShell/FinalShell</li>
+<li>文件上传工具一个</li>
+</ul>
+<h1 id="基本知识"><a href="#基本知识" class="headerlink" title="基本知识"></a>基本知识</h1><h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>通过 Compose，您可以使用 YML 文件来配置应用程序需要的所有服务。然后，使用一个命令，就可以从 YML 文件配置中创建并启动所有服务。</p>
+<h3 id="Docker-Compose-安装"><a href="#Docker-Compose-安装" class="headerlink" title="Docker Compose 安装"></a>Docker Compose 安装</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -L https://github.com/docker/compose/releases/download/1.8.0/run.sh &gt; /usr/local/bin/docker-compose</span><br><span class="line">chmod +x /usr/local/bin/docker-compose</span><br><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure>
+
+<h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><p>以我们需要安装的Sonar为例，流程可以分为如下：</p>
+<ol>
+<li>创建sonar文件夹</li>
+<li>创建docker-compose.yaml文件</li>
+<li>将docker-compose.yaml上传到linux服务器</li>
+<li>在服务器上执行</li>
+</ol>
+<p>参考：<a href="https://www.runoob.com/docker/docker-compose.html">菜鸟教程</a></p>
+<h1 id="Sonar-安装"><a href="#Sonar-安装" class="headerlink" title="Sonar 安装"></a>Sonar 安装</h1><h2 id="准备docker-compose-yaml文件"><a href="#准备docker-compose-yaml文件" class="headerlink" title="准备docker-compose.yaml文件"></a>准备docker-compose.yaml文件</h2><p>直接上完整文件</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">postgres:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">postgres</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">postgres</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">5432</span><span class="string">:5432</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/opt/postgres/postgresql/:/var/lib/postgresql</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/opt/postgres/data/:/var/lib/postgresql/data</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">TZ:</span> <span class="string">Asia/Shanghai</span></span><br><span class="line">      <span class="attr">POSTGRES_USER:</span> <span class="string">sonar</span></span><br><span class="line">      <span class="attr">POSTGRES_PASSWORD:</span> <span class="string">sonar</span></span><br><span class="line">      <span class="attr">POSTGRES_DB:</span> <span class="string">sonar</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">sonar:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">sonarqube</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">sonar</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">postgres</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/opt/sonarqube/extensions:/opt/sonarqube/extensions</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/opt/sonarqube/logs:/opt/sonarqube/logs</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/opt/sonarqube/data:/opt/sonarqube/data</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/opt/sonarqube/conf:/opt/sonarqube/conf</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">9000</span><span class="string">:9000</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">SONARQUBE_JDBC_USERNAME:</span> <span class="string">sonar</span></span><br><span class="line">      <span class="attr">SONARQUBE_JDBC_PASSWORD:</span> <span class="string">sonar</span></span><br><span class="line">      <span class="attr">SONARQUBE_JDBC_URL:</span> <span class="string">jdbc:postgresql://postgres:5432/sonar</span></span><br></pre></td></tr></table></figure>
+
+<p>默认会下载最新版本</p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><ul>
+<li>在linux服务器上新建目录</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir sonar</span><br><span class="line">cd sonar</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将上述docker-compose.yaml 拷贝到目录中</li>
+<li>执行命令 以后台运行的方式启动</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>现在可以通过服务器ip：9000去访问了</li>
+</ul>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="docker-compose命令不存在"><a href="#docker-compose命令不存在" class="headerlink" title="docker-compose命令不存在"></a>docker-compose命令不存在</h3><p>使用如下下载即可</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m) -O /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<h3 id="授权许可被拒绝问题"><a href="#授权许可被拒绝问题" class="headerlink" title="授权许可被拒绝问题"></a>授权许可被拒绝问题</h3><p>附加权限即可</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<p>其他问题参考链接：<a href="https://ld246.com/article/1578074168473">部署问题</a></p>
+<h1 id="Sonar使用"><a href="#Sonar使用" class="headerlink" title="Sonar使用"></a>Sonar使用</h1><p>默认用户admin密码admin</p>
+<h2 id="汉化"><a href="#汉化" class="headerlink" title="汉化"></a>汉化</h2><h3 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h3><p>登录后在界面安装中文包</p>
+<p><img src="https://i.loli.net/2020/09/29/38Ciuf5Ww7HsOQo.png" alt="image-20200929155213585"></p>
+<h3 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h3><p>根据表格判断需要安装哪个包，通过git下载包导入</p>
+<p><img src="https://i.loli.net/2020/09/29/7vVtCWaoDfbOMNc.png" alt="img"></p>
+<p><a href="https://github.com/SonarQubeCommunity/sonar-l10n-zh"><strong>地址</strong></a>,<a href="https://github.com/SonarQubeCommunity/sonar-l10n-zh/releases/latest"><strong>旧版本下载地址</strong></a>,<a href="https://www.cnblogs.com/Mercury-linux/p/12661786.html">参考链接</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#下载jar</span><br><span class="line">https:&#x2F;&#x2F;github.com&#x2F;SonarQubeCommunity&#x2F;sonar-l10n-zh&#x2F;releases&#x2F;download&#x2F;sonar-l10n-zh-plugin-1.20&#x2F;sonar-l10n-zh-plugin-1.20.jar</span><br><span class="line"></span><br><span class="line">#jar包放入docker目录</span><br><span class="line">docker cp  sonar-l10n-zh-plugin-1.20.jar sonarqube:&#x2F;opt&#x2F;sonarqube&#x2F;extensions&#x2F;plugins&#x2F;</span><br><span class="line">docker restart sonarqube</span><br><span class="line">#查看启动情况</span><br><span class="line">docker logs -f sonarqube</span><br><span class="line">#重新登录网页查看</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析项目"><a href="#分析项目" class="headerlink" title="分析项目"></a>分析项目</h2><h3 id="添加token"><a href="#添加token" class="headerlink" title="添加token"></a>添加token</h3><p>为了分析项目首先我们要给用户创建一个token，进入如图所示页面</p>
+<p><img src="https://i.loli.net/2020/09/29/sTDGQmV8EMyNRUe.png" alt="image-20200929155905714"></p>
+<p>在生成令牌处填写一个名称 点击生成</p>
+<p><strong>注意：</strong>生成的内容不会显示第二次，要注意保存</p>
+<h3 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h3><ul>
+<li>在弹出的界面中输入刚才创建的token ，选择使用已有令牌</li>
+</ul>
+<p><img src="https://i.loli.net/2020/09/29/8pdkasRzm5UW2Qx.png" alt="image-20200929160234754"></p>
+<ul>
+<li><p>选择项目对应的语言</p>
+<p><img src="https://i.loli.net/2020/09/29/XrADLMdv6cB3gGS.png" alt="image-20200929163313606"></p>
+</li>
+<li><p>点击下载按钮 下载文件 </p>
+<p>根据你使用的版本来下载对应的文件，这里我们使用Core 3.x</p>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2020/09/29/EPy6gnFmXDNrbp9.png" alt="image-20200929160844174"></p>
+<p>将你下载的文件解压到一个单独的文件夹中然后将文件夹添加入环境变量中</p>
+<p>如图所示： 则添加到 sonar-scanner-msbuild-4.10-netcoreapp3.0层</p>
+<p><img src="https://i.loli.net/2020/09/29/SXKmTUyI36AdvG7.png" alt="image-20200929162649294"></p>
+<ul>
+<li><p>使用MSBuild执行SonarQube扫描</p>
+<p>复制选择语言那一步的执行代码</p>
+<p>可以通过cmd直接执行，也可以通过vs studio 生成事件里执行</p>
+<p><strong>选择以cmd 的方式运行</strong></p>
+<p>将msbuild路径也放入环境变量中</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">X86: C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe</span><br><span class="line">X64: C:\Program Files (x86)\MSBuild\14.0\Bin\amd64\MSBuild.exe</span><br></pre></td></tr></table></figure>
+
+<p>cmd 进入项目所在目录中</p>
+<p>执行代码即可</p>
+<p><strong>选择Vs运行</strong></p>
+<p>在生成事件中填入</p>
+<p><img src="https://i.loli.net/2020/09/29/oKLbCuAj6eV4qfv.png" alt="image-20200929171543585"></p>
+</li>
+</ul>
+<p>在这里我们发现安装提示的命令输入无法执行，查阅<a href="https://sonarcloud.io/documentation/analysis/scan/sonarscanner-for-msbuild/">文档</a>可知:</p>
+<p>修改SonarQube.Analysis.xml</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">SonarQubeAnalysisProperties</span>  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="attr">xmlns:xsd</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema&quot;</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.sonarsource.com/msbuild/integration/2015/1&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Property</span> <span class="attr">Name</span>=<span class="string">&quot;sonar.host.url&quot;</span>&gt;</span>https://sonarcloud.io<span class="tag">&lt;/<span class="name">Property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Property</span> <span class="attr">Name</span>=<span class="string">&quot;sonar.login&quot;</span>&gt;</span>[my-user-token]<span class="tag">&lt;/<span class="name">Property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">SonarQubeAnalysisProperties</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>需要安装Core 版本的Scanner</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">dotnet tool install --global dotnet-sonarscanner</span><br></pre></td></tr></table></figure>
+
+<p>现在我们可以在命令行中使用如下命令了</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">dotnet sonarscanner begin /k:&quot;project-key&quot; /o:&quot;&lt;organization&gt;&quot; /d:sonar.login=&quot;&lt;token&gt;&quot;</span><br><span class="line">dotnet build &lt;path to solution.sln&gt;</span><br><span class="line">dotnet sonarscanner end /d:sonar.login=&quot;&lt;token&gt;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>例子如：</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line">dotnet sonarscanner begin /k:<span class="string">&quot;ny&quot;</span> /d:sonar.host.url=<span class="string">&quot;http://192.168.1.1:9000&quot;</span> /d:sonar.login=<span class="string">&quot;47cf0aaaaaaaaaaaaaaaac057ce8a&quot;</span></span><br><span class="line">dotnet build </span><br><span class="line">dotnet sonarscanner end /d:sonar.login=<span class="string">&quot;47cf041ecaaaaaaaaa3938ac057ce8a&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="问题处理"><a href="#问题处理" class="headerlink" title="问题处理"></a>问题处理</h3><h4 id="No-quality-profiles-have-been-found"><a href="#No-quality-profiles-have-been-found" class="headerlink" title="No quality profiles have been found"></a>No quality profiles have been found</h4><p>遇到No quality profiles have been found, you probably don’t have any language plugin installed.问题</p>
+<p>顾名思义是缺少了对应语言的插件</p>
+<p>依然和汉化一样在市场中下载</p>
+<p>通过 http://{部署ip}:9000/api/plugins/installed 可以快速查看已安装的插件</p>
+]]></content>
+      <categories>
+        <category>Sonarqube</category>
+      </categories>
+      <tags>
+        <tag>Sonarqube</tag>
+        <tag>Linux</tag>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
 </search>
